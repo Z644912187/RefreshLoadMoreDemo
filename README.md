@@ -1,1 +1,2 @@
 "# RefreshLoadMoreDemo" 
+使用SwipeRefreshLayout和RecyclerView实现仿简书下拉刷新和上拉加载更多，使用demo见app，目前支持LinearLayoutManager，使用者可根据需求加入自己要的layoutManager
