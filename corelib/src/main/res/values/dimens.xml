@@ -1,0 +1,7 @@
+<resources>
+
+    <dimen name="textSize_title">20sp</dimen>
+    <dimen name="textSize_normal">16sp</dimen>
+    <dimen name="textSize_small">14sp</dimen>
+
+</resources>
