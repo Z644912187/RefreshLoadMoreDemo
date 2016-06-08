@@ -1,7 +1,5 @@
 package com.sjtu.charles.lib.adapter;
 
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -11,20 +9,12 @@ import android.view.ViewGroup;
 
 import com.wordoor.andr.corelib.R;
 
+
 public class RecyclerViewLoadMoreAdapter extends Adapter<ViewHolder> {
 
     private static final int TYPE_FOOTER = 0x11001;
-    protected RecyclerView recyclerView;
-
-    RecyclerView.LayoutManager layoutManager;
 
     public void setRecyclerView(RecyclerView recyclerView) {
-        setRecyclerView(recyclerView,null);
-    }
-
-    public void setRecyclerView(RecyclerView recyclerView, final SwipeRefreshLayout swipeRefreshLayout) {
-        this.recyclerView = recyclerView;
-        layoutManager = recyclerView.getLayoutManager();
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -34,23 +24,34 @@ public class RecyclerViewLoadMoreAdapter extends Adapter<ViewHolder> {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int lastVisibleItemPosition = -1;
-                if (layoutManager instanceof LinearLayoutManager) {
-                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) layoutManager;
-                    lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+                if (!recyclerView.canScrollVertically(-1)) {
+                    onScrolledToTop();
+                } else if (!recyclerView.canScrollVertically(1)) {
+                    onScrolledToBottom();
+                } else if (dy < 0) {
+                    onScrolledUp();
+                } else if (dy > 0) {
+                    onScrolledDown();
                 }
-                if (swipeRefreshLayout != null) {
-                    boolean isRefreshing = swipeRefreshLayout.isRefreshing();
-                    if (isRefreshing) {
-                        notifyItemRemoved(getItemCount());
-                        return;
-                    }
-                }
-                if (lastVisibleItemPosition + 1 == getItemCount() && onLoadMoreListener != null) {
+            }
+            public void onScrolledUp() {}
+
+            public void onScrolledDown() {}
+
+            public void onScrolledToTop() {}
+
+            public void onScrolledToBottom() {
+                if (onLoadMoreListener != null) {
                     onLoadMoreListener.OnLoadMore();
+                    setLoading(true);
                 }
             }
         });
+    }
+
+    public void setLoading(boolean flag) {
+        if (view != null)
+            view.setVisibility(flag?View.VISIBLE:View.GONE);
     }
 
     @Override
@@ -66,10 +67,12 @@ public class RecyclerViewLoadMoreAdapter extends Adapter<ViewHolder> {
         return 0;
     }
 
+    View view;
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_FOOTER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_foot, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_foot, parent, false);
+            setLoading(false);
             return new FootViewHolder(view);
         }
         return null;
