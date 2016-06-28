@@ -59,6 +59,7 @@ public class RecyclerViewAdapter extends RecyclerViewLoadMoreAdapter {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        super.onBindViewHolder(holder,position);
         if (holder instanceof ItemViewHolder) {
 //            ((ItemViewHolder)holder).tv.setText(data.get(position));
             if (onItemClickListener != null) {

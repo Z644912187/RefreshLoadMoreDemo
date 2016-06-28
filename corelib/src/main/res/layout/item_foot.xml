@@ -1,23 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:gravity="center"
-    android:orientation="horizontal">
+    android:layout_height="50dp">
 
-    <ProgressBar
-        android:layout_marginRight="6dp"
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+    <LinearLayout
+        android:id="@+id/ll_loading_more"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pb_load_animate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6dp"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_load_title"
+            style="@style/SmallGreyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/loading" />
+    </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_load_no_more"
         style="@style/SmallGreyTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/loading" />
-
-</LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/load_no_more"
+        android:visibility="visible"
+        android:gravity="center"/>
+</FrameLayout>
